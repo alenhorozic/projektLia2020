@@ -5,11 +5,8 @@ import { Controller, Get } from '@nestjs/common';
 export class AppController {
 
   @Get()              //   http://localhost:3000    
-  getHello(): string {
-    return 'Hello Lia!!';
+  getIndex(): string {
+    return 'Home Page!!';
   }
-  @Get('world')       //  http://localhost:3000/world
-  getWorld(): string {
-    return 'Hello World!!!!!';
-  }
+
 }
