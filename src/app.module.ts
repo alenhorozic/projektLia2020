@@ -4,6 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfiguration } from 'config/database.configuration';
 import { Administrator } from 'entities/administrator.entity';
 import { AdministratorService } from './services/administrator/administrator.service';
+import { Accaunt } from 'entities/accaunt.entity';
+import { CommingTransaktion } from 'entities/commingTransaktion.entity';
+import { Transaktion } from 'entities/transaktion.entity';
+import { TransaktionType } from 'entities/transaktionType.entity';
+import { User } from 'entities/user.entity';
 
 
 @Module({
@@ -15,7 +20,13 @@ import { AdministratorService } from './services/administrator/administrator.ser
       username:DatabaseConfiguration.username,
       password:DatabaseConfiguration.password,
       database:DatabaseConfiguration.database,
-      entities: [ Administrator ]
+      entities: [ Administrator,
+        Accaunt,
+        CommingTransaktion,
+        Transaktion,
+        TransaktionType,
+        User
+       ]
     }),
     TypeOrmModule.forFeature([ Administrator ])
   ],

@@ -15,4 +15,9 @@ export class AdministratorService {
     getById(id:number): Promise<Administrator> {
         return this.administrator.findOne(id);
     }
+
+//add
+//editById
+//delete/byId
+
 }
