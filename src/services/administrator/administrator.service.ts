@@ -22,12 +22,12 @@ export class AdministratorService {
         const crypto = require('crypto'); 
         const passwordHash = crypto.createHash('sah512');           // DTO => model
         passwordHash.update(data.password);                         // username => username        // password [-] =>passwordHash                                                             
-        const passwordHashString = passwordHash.digest('hex').topUpperCase();
+        const passwordHashString = passwordHash.digest('hex').toUpperCase();
 
         let newAdmin: Administrator = new Administrator();
         newAdmin.username = data.username;
         newAdmin.passwordHash = passwordHashString;
-        newAdmin.email =data.email;
+        newAdmin.email = data.email;
 
         return this.administrator.save(newAdmin);
     }
@@ -37,9 +37,10 @@ export class AdministratorService {
         const crypto = require('crypto'); 
         const passwordHash = crypto.createHash('sah512');           // DTO => model
         passwordHash.update(data.password);                         // username => username        // password [-] =>passwordHash                                                             
-        const passwordHashString = passwordHash.digest('hex').topUpperCase();
+        const passwordHashString = passwordHash.digest('hex').toUpperCase();
 
         admin.passwordHash = passwordHashString;
+        admin.email = data.email;
 
         return this.administrator.save(admin);
 
@@ -47,4 +48,3 @@ export class AdministratorService {
 }
 //add
 //editById
-//delete/byId

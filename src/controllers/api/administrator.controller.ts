@@ -10,7 +10,7 @@ export class AdministratorControler{
         private administratorService: AdministratorService
       ){}
 
-    @Get()               //GET    http://localhost:3000/api/administrator       ispisace listu administratora!! 
+    @Get()               //GET    http://localhost:3000/api/administrator        list all  administratora!! 
     getAll(): Promise<Administrator[]> {
     return this.administratorService.getAll();
   }
