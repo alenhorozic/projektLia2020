@@ -10,6 +10,8 @@ import { Transaktion } from 'entities/transaktion.entity';
 import { TransaktionType } from 'entities/transaktionType.entity';
 import { User } from 'entities/user.entity';
 import { AdministratorControler } from './controllers/api/administrator.controller';
+import { UserControler } from './controllers/api/user.controller';
+import { UserService } from './services/user/user.service';
 
 
 @Module({
@@ -29,12 +31,13 @@ import { AdministratorControler } from './controllers/api/administrator.controll
         User
        ]
     }),
-    TypeOrmModule.forFeature([ Administrator ])
+    TypeOrmModule.forFeature([ Administrator, User ])
   ],
   controllers: [
     AppController,
-    AdministratorControler
+    AdministratorControler,
+    UserControler
   ],
-  providers: [AdministratorService],
+  providers: [AdministratorService, UserService],
 })
 export class AppModule {}

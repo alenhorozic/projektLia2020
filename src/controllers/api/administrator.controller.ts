@@ -27,5 +27,4 @@ export class AdministratorControler{
   edit(@Param('id') id: number, @Body() data: EditAdministratorDto):Promise<Administrator>{
       return this.administratorService.editById(id, data);
   }
-
 }

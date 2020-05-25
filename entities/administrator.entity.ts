@@ -23,6 +23,9 @@ export class Administrator {
   })
   passwordHash: string;
 
-  @Column("varchar", { name: "email", length: 128})
+  @Column("varchar", {
+    name: "email",
+    length: 128
+    })
   email: string;
 }

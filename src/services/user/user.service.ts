@@ -1,38 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Administrator } from 'entities/administrator.entity';
+import { User } from 'entities/user.entity';
 import { Repository } from 'typeorm';
-import { AddAdministratorDto } from 'src/dtos/administrator/add.administrator.dto';
-import { EditAdministratorDto } from 'src/dtos/administrator/edit.administrator.dto';
+import { AddUserDto } from 'src/dtos/user/add.user.dto';
+import { EditUserDto } from 'src/dtos/user/edit.user.dto';
 import * as crypto from "crypto";
 import { ApiRespons } from 'src/misc/apirespons.class';
 
 
 @Injectable()
-export class AdministratorService {
+export class UserService {
     constructor(
-        @InjectRepository(Administrator) 
-        private readonly administrator: Repository<Administrator>,
+        @InjectRepository(User) 
+        private readonly user: Repository<User>,
     ) { }
-    getAll(): Promise<Administrator[]> {
-        return this.administrator.find();
+    getAll(): Promise<User[]> {
+        return this.user.find();
     }
-    getById(id:number): Promise<Administrator> {
-        return this.administrator.findOne(id);
+    getById(id:number): Promise<User> {
+        return this.user.findOne(id);
     }
-    add(data: AddAdministratorDto): Promise<Administrator | ApiRespons> {
+    add(data: AddUserDto): Promise<User | ApiRespons> {
         const crypto = require('crypto'); 
         const passwordHash = crypto.createHash('sha512');           // DTO => model
         passwordHash.update(data.password);                         // username => username        // password [-] =>passwordHash                                                             
         const passwordHashString = passwordHash.digest('hex').toUpperCase();
 
-        let newAdmin: Administrator = new Administrator();
-        newAdmin.username = data.username;
-        newAdmin.passwordHash = passwordHashString;
-        newAdmin.email = data.email;
+        let newUser: User = new User();
+        newUser.email = data.email;
+        newUser.passwordHash = passwordHashString;
+        newUser.forname = data.forname;
+        newUser.surname = data.surname;
+        newUser.phoneNumber = data.phoneNumber
+        
 
         return new Promise((resolve) =>{
-            this.administrator.save(newAdmin)
+            this.user.save(newUser)
             .then(data => resolve(data))
             .catch(error =>{
                 const response: ApiRespons = new ApiRespons("error",-1001,"Not Is Wrong");
@@ -41,24 +44,24 @@ export class AdministratorService {
         });
         
     }
-        async editById(id: number,data: EditAdministratorDto): Promise<Administrator> {
-        let admin: Administrator = await this.administrator.findOne(id);
+        async editById(id: number,data: EditUserDto): Promise<User> {
+        let user: User = await this.user.findOne(id);
         
-        if(data.email && data.password){
+        if(data.phoneNumber && data.password){
             const crypto = require('crypto'); 
         const passwordHash = crypto.createHash('sha512');           // DTO => model
         passwordHash.update(data.password);                         // username => username        // password [-] =>passwordHash                                                             
         const passwordHashString = passwordHash.digest('hex').toUpperCase();
 
-        admin.passwordHash = passwordHashString;
-        admin.email = data.email;
-        return this.administrator.save(admin);
+        user.passwordHash = passwordHashString;
+        user.phoneNumber = data.phoneNumber;
+        return this.user.save(user);
         }
 
-        if(data.email){
-            admin.email = data.email;
+        if(data.phoneNumber){
+            user.phoneNumber = data.phoneNumber;
 
-        return this.administrator.save(admin)
+        return this.user.save(user)
         }
 
         if(data.password){
@@ -67,11 +70,9 @@ export class AdministratorService {
         passwordHash.update(data.password);                         // username => username        // password [-] =>passwordHash                                                             
         const passwordHashString = passwordHash.digest('hex').toUpperCase();
 
-        admin.passwordHash = passwordHashString;
-        return this.administrator.save(admin);
+        user.passwordHash = passwordHashString;
+        return this.user.save(user);
         }
 
     }
 }
-//add
-//editById
