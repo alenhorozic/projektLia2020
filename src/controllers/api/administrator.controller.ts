@@ -5,6 +5,7 @@ import { AddAdministratorDto } from "src/dtos/administrator/add.administrator.dt
 import { EditAdministratorDto } from "src/dtos/administrator/edit.administrator.dto";
 import { ApiRespons } from "src/misc/apirespons.class";
 
+
 @Controller('api/administrator')
 export class AdministratorControler{
     constructor(
@@ -16,15 +17,21 @@ export class AdministratorControler{
     return this.administratorService.getAll();
   }
   @Get(':id')               //GET    http://localhost:3000/api/administrator/4/             
-  getById(@Param('id') administratorId: number): Promise<Administrator> {
-    return this.administratorService.getById(administratorId);
+    getById(@Param('id') administratorId: number): Promise<Administrator | ApiRespons> {
+      return new Promise(async (resolve) =>{
+        let adnin = await this.administratorService.getById(administratorId);
+        if(adnin === undefined){
+          resolve(new ApiRespons("error", -1003,"Administrator Not Find"));
+        }
+        resolve(adnin);
+      });
   }
   @Put('')                  //PUT    http://localhost:3000/api/administrator  
   add( @Body() data: AddAdministratorDto ): Promise<Administrator | ApiRespons>{
       return this.administratorService.add(data);
   }  
   @Post(':id')                //POST    http://localhost:3000/api/administrator/4/ 
-  edit(@Param('id') id: number, @Body() data: EditAdministratorDto):Promise<Administrator>{
+  edit(@Param('id') id: number, @Body() data: EditAdministratorDto):Promise<Administrator | ApiRespons>{
       return this.administratorService.editById(id, data);
   }
 }

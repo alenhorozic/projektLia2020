@@ -6,6 +6,7 @@ import { AddUserDto } from 'src/dtos/user/add.user.dto';
 import { EditUserDto } from 'src/dtos/user/edit.user.dto';
 import * as crypto from "crypto";
 import { ApiRespons } from 'src/misc/apirespons.class';
+import { resolve } from 'dns';
 
 
 @Injectable()
@@ -38,14 +39,20 @@ export class UserService {
             this.user.save(newUser)
             .then(data => resolve(data))
             .catch(error =>{
-                const response: ApiRespons = new ApiRespons("error",-1001,"Not Is Wrong");
+                const response: ApiRespons = new ApiRespons("error",-1001,"Not Is Wrong user Whit Same email Or phoneNumber All Redy Exist");
                 resolve(response);
             });
         });
         
     }
-        async editById(id: number,data: EditUserDto): Promise<User> {
+        async editById(id: number,data: EditUserDto): Promise<User | ApiRespons>  {
         let user: User = await this.user.findOne(id);
+
+        if(user === undefined) {
+            return new Promise((resolve) => {
+                resolve(new ApiRespons("error", -1002,"User Not Find"));
+            });
+        }
         
         if(data.phoneNumber && data.password){
             const crypto = require('crypto'); 

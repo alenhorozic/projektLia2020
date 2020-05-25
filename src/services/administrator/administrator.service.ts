@@ -4,7 +4,6 @@ import { Administrator } from 'entities/administrator.entity';
 import { Repository } from 'typeorm';
 import { AddAdministratorDto } from 'src/dtos/administrator/add.administrator.dto';
 import { EditAdministratorDto } from 'src/dtos/administrator/edit.administrator.dto';
-import * as crypto from "crypto";
 import { ApiRespons } from 'src/misc/apirespons.class';
 
 
@@ -35,14 +34,20 @@ export class AdministratorService {
             this.administrator.save(newAdmin)
             .then(data => resolve(data))
             .catch(error =>{
-                const response: ApiRespons = new ApiRespons("error",-1001,"Not Is Wrong");
+                const response: ApiRespons = new ApiRespons("error",-1001,"Not Is Wrong  username All Ready Exist");
                 resolve(response);
             });
         });
         
     }
-        async editById(id: number,data: EditAdministratorDto): Promise<Administrator> {
+        async editById(id: number,data: EditAdministratorDto): Promise<Administrator | ApiRespons> {
         let admin: Administrator = await this.administrator.findOne(id);
+
+        if(admin === undefined) {
+            return new Promise((resolve) => {
+                resolve(new ApiRespons("error", -1003,"Administrator Not Find"));
+            });
+        }
         
         if(data.email && data.password){
             const crypto = require('crypto'); 
