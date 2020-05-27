@@ -10,7 +10,7 @@ import { TransaktionService } from "src/services/transaktion/transaktion.service
     },
     params: {
         id: {
-            field: 'transaktionid',
+            field: 'transaktionId',
             type: 'number',
             primary: true
         },

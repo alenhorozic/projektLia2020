@@ -18,6 +18,7 @@ import { TransaktionService } from './services/transaktion/transaktion.service';
 import { TransaktionController } from './controllers/api/transaktion.controller';
 import { CommingTransaktionService } from './services/commingTransaktion/commingTransaktion.service';
 import { CommingTransaktionController } from './controllers/api/commingTransaktion.controller';
+import { AuthController } from './controllers/api/auth.controller';
 
 
 @Module({
@@ -45,7 +46,8 @@ import { CommingTransaktionController } from './controllers/api/commingTransakti
     UserControler,
     AccauntControler,
     TransaktionController,
-    CommingTransaktionController
+    CommingTransaktionController,
+    AuthController
   ],
   providers: [AdministratorService, UserService, AccauntService, TransaktionService, CommingTransaktionService],
 })
