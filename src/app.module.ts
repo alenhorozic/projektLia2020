@@ -12,6 +12,12 @@ import { User } from 'entities/user.entity';
 import { AdministratorControler } from './controllers/api/administrator.controller';
 import { UserControler } from './controllers/api/user.controller';
 import { UserService } from './services/user/user.service';
+import { AccauntControler } from './controllers/api/accaunt.controller';
+import { AccauntService } from './services/accaunt/accaunt.service';
+import { TransaktionService } from './services/transaktion/transaktion.service';
+import { TransaktionController } from './controllers/api/transaktion.controller';
+import { CommingTransaktionService } from './services/commingTransaktion/commingTransaktion.service';
+import { CommingTransaktionController } from './controllers/api/commingTransaktion.controller';
 
 
 @Module({
@@ -31,13 +37,16 @@ import { UserService } from './services/user/user.service';
         User
        ]
     }),
-    TypeOrmModule.forFeature([ Administrator, User ])
+    TypeOrmModule.forFeature([ Administrator, User, Accaunt, Transaktion, CommingTransaktion ])
   ],
   controllers: [
     AppController,
     AdministratorControler,
-    UserControler
+    UserControler,
+    AccauntControler,
+    TransaktionController,
+    CommingTransaktionController
   ],
-  providers: [AdministratorService, UserService],
+  providers: [AdministratorService, UserService, AccauntService, TransaktionService, CommingTransaktionService],
 })
 export class AppModule {}

@@ -6,7 +6,6 @@ import { AddUserDto } from 'src/dtos/user/add.user.dto';
 import { EditUserDto } from 'src/dtos/user/edit.user.dto';
 import * as crypto from "crypto";
 import { ApiRespons } from 'src/misc/apirespons.class';
-import { resolve } from 'dns';
 
 
 @Injectable()
@@ -22,7 +21,6 @@ export class UserService {
         return this.user.findOne(id);
     }
     add(data: AddUserDto): Promise<User | ApiRespons> {
-        const crypto = require('crypto'); 
         const passwordHash = crypto.createHash('sha512');           // DTO => model
         passwordHash.update(data.password);                         // username => username        // password [-] =>passwordHash                                                             
         const passwordHashString = passwordHash.digest('hex').toUpperCase();
@@ -55,7 +53,6 @@ export class UserService {
         }
         
         if(data.phoneNumber && data.password){
-            const crypto = require('crypto'); 
         const passwordHash = crypto.createHash('sha512');           // DTO => model
         passwordHash.update(data.password);                         // username => username        // password [-] =>passwordHash                                                             
         const passwordHashString = passwordHash.digest('hex').toUpperCase();
