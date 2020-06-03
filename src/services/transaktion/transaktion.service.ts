@@ -6,7 +6,7 @@ import { Repository } from "typeorm";
 
 @Injectable()
 export class TransaktionService extends TypeOrmCrudService<Transaktion> {
-    constructor( @InjectRepository(Transaktion) private readonly transaktion: Repository<Transaktion>  //!!ADD I APP.MODUL:TS
+    constructor( @InjectRepository(Transaktion) private readonly transaktion: Repository<Transaktion>  //!!ADD I APP.MODUL.TS
     ){
         super(transaktion);
     }

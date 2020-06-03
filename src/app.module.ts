@@ -19,8 +19,9 @@ import { TransaktionController } from './controllers/api/transaktion.controller'
 import { CommingTransaktionService } from './services/commingTransaktion/commingTransaktion.service';
 import { CommingTransaktionController } from './controllers/api/commingTransaktion.controller';
 import { AuthController } from './controllers/api/auth.controller';
-import { AuthUserController } from './controllers/api/authUser.controller';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import { TransaktionTypeController } from './controllers/api/transaktionType.controller';
+import { TransaktionTypeService } from './services/transaktionType/transaktionType.service';
 
 
 @Module({
@@ -40,7 +41,7 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
         User
        ]
     }),
-    TypeOrmModule.forFeature([ Administrator, User, Accaunt, Transaktion, CommingTransaktion ])
+    TypeOrmModule.forFeature([ Administrator, User, Accaunt, Transaktion, CommingTransaktion, TransaktionType ])
   ],
   controllers: [
     AppController,
@@ -50,11 +51,11 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
     TransaktionController,
     CommingTransaktionController,
     AuthController,
-    AuthUserController
+    TransaktionTypeController
   ],
-  providers: [AdministratorService, UserService, AccauntService, TransaktionService, CommingTransaktionService],
+  providers: [AdministratorService, UserService, AccauntService, TransaktionService, CommingTransaktionService, TransaktionTypeService],
   exports:[
-    AdministratorService,
+    AdministratorService,UserService
   ]
 })
 export class AppModule implements NestModule {

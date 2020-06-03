@@ -1,9 +1,11 @@
-import { Controller, Get, Param, Put, Body, Post } from "@nestjs/common";
+import { Controller, Get, Param, Put, Body, Post, UseGuards } from "@nestjs/common";
 import { ApiRespons } from "src/misc/apirespons.class";
 import { UserService } from "src/services/user/user.service";
 import { User } from "entities/user.entity";
 import { AddUserDto } from "src/dtos/user/add.user.dto";
 import { EditUserDto } from "src/dtos/user/edit.user.dto";
+import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
+import { RoleCheckerGuard } from "src/misc/role.checker.guard";
 
 @Controller('api/user')
 export class UserControler{
@@ -12,10 +14,14 @@ export class UserControler{
       ){}
 
   @Get()               //GET    http://localhost:3000/api/user        list all  user!! 
+  @UseGuards(RoleCheckerGuard)
+  @AllowToRoles('administrator')
     getAll(): Promise<User[]> {
     return this.userService.getAll();
   }
-  @Get(':id')               //GET    http://localhost:3000/api/user/2/             
+  @Get(':id')               //GET    http://localhost:3000/api/user/2/ 
+  @UseGuards(RoleCheckerGuard)
+  @AllowToRoles('administrator','user')         
   getById(@Param('id') userId: number): Promise<User | ApiRespons> {
     return new Promise(async (resolve) =>{
       let adnin = await this.userService.getById(userId);
@@ -25,11 +31,15 @@ export class UserControler{
       resolve(adnin);
     });
 }
-  @Put('')                  //PUT    http://localhost:3000/api/user  
-  add( @Body() data: AddUserDto ): Promise<User | ApiRespons>{
-      return this.userService.add(data);
-  }  
+/*  @Put('')                  //PUT    http://localhost:3000/api/user  
+  @UseGuards(RoleCheckerGuard)
+  @AllowToRoles('administrator')                                          // "Only administrator can create new user"
+  add( @Body() data: AddUserDto ): Promise<User | ApiRespons>{           //  http://localhost:3000/api/administrator/registeruser
+      return this.userService.add(data);                                //      using administrator.controller
+  }  */
   @Post(':id')                //POST    http://localhost:3000/api/user/2/ 
+  @UseGuards(RoleCheckerGuard)
+  @AllowToRoles('administrator','user')
   edit(@Param('id') id: number, @Body() data: EditUserDto):Promise<User | ApiRespons>{
       return this.userService.editById(id, data);
     }

@@ -10,7 +10,7 @@ import { CommingTransaktion } from "entities/commingTransaktion.entity";
     },
     params: {
         id: {
-            field: 'commingTransaktionid',
+            field: 'commingTransaktionId',
             type: 'number',
             primary: true
         }
