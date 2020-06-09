@@ -11,9 +11,9 @@ import { User } from "./user.entity";
 import { CommingTransaktion } from "./commingTransaktion.entity";
 import { Transaktion } from "./transaktion.entity";
 
-@Index("uq_accaubt_number_accaunt", ["accauntNumber"], { unique: true })
+@Index("uq_accaunt_number_accaunt", ["accauntNumber"], { unique: true })
 @Index("fk_accaunt_usr_id", ["userId"], {})
-@Entity("accaunt", )
+@Entity("accaunt", { schema: "bank" })
 export class Accaunt {
   @PrimaryGeneratedColumn({ type: "int", name: "accaunt_id", unsigned: true })
   accauntId: number;
@@ -32,6 +32,9 @@ export class Accaunt {
 
   @Column("int", { name: "user_id", unsigned: true })
   userId: number;
+
+  @Column("varchar", { name: "accaunt_name", length: 64 })
+  accauntName: string;
 
   @ManyToOne(() => User, (user) => user.accaunts, {
     onDelete: "RESTRICT",

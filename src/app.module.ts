@@ -55,7 +55,7 @@ import { TransaktionTypeService } from './services/transaktionType/transaktionTy
   ],
   providers: [AdministratorService, UserService, AccauntService, TransaktionService, CommingTransaktionService, TransaktionTypeService],
   exports:[
-    AdministratorService,UserService
+    AdministratorService,UserService,AccauntService
   ]
 })
 export class AppModule implements NestModule {
