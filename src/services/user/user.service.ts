@@ -16,11 +16,20 @@ export class UserService {
         private readonly user: Repository<User>,
     ) { }
     getAll(): Promise<User[]> {
-        return this.user.find();
+        return this.user.find({
+            relations:[
+                "accaunts",
+            ]
+        });
     }
     async getByEmail(email: string): Promise< User | null> { 
         const user = await this.user.findOne({
-            email : email
+            where:{
+                 email : email,
+            },
+            relations:[
+                "accaunts",
+            ]
         });
         if (user){
             return user;
@@ -28,7 +37,11 @@ export class UserService {
         return null;
     }
     getById(id:number): Promise<User> {
-        return this.user.findOne(id);
+        return this.user.findOne(id,{
+            relations:[
+                "accaunts",
+            ]
+        });
     }
     add(data: AddUserDto): Promise<User | ApiRespons> {
         const passwordHash = crypto.createHash('sha512');           // DTO => model

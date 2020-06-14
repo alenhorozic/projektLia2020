@@ -17,6 +17,13 @@ import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
             primary: true
         }
     },
+    query: {
+        join:{
+            transaktions:{
+                eager: true
+            },
+        }
+    },
     routes: {
         only:[
             "createOneBase",

@@ -15,14 +15,26 @@ export class AccauntService {
         private readonly accaunt: Repository<Accaunt>,
     ) { }
     getAll(): Promise<Accaunt[]> {
-        return this.accaunt.find();
+        return this.accaunt.find({
+            relations:[
+                "user",
+                "transaktions",
+                "transaktions.transaktionType",
+                "commingTransaktions"
+            ]
+        });
     }
     async getAllAccauntUser(userId: number): Promise<Accaunt[] | null> {
         const accaunt = await this.accaunt.find({
             where: {
                 userId: userId,
             },
-            relations: ["user"],
+            relations: [
+                "user",
+                "transaktions",
+                "transaktions.transaktionType",
+                "commingTransaktions"
+            ]
         });
         if(!accaunt || accaunt.length === 0) {
             return null;
@@ -30,7 +42,14 @@ export class AccauntService {
         return accaunt;
     }
     getById(id:number): Promise<Accaunt> {
-        return this.accaunt.findOne(id);
+        return this.accaunt.findOne(id,{
+             relations:[
+                    "user",
+                    "transaktions",
+                    "transaktions.transaktionType",
+                    "commingTransaktions"
+            ] 
+        });
     }
     add(data: AddAccauntDto): Promise<Accaunt | ApiRespons> {
         
