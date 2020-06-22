@@ -10,7 +10,6 @@ import { AddUserDto } from "src/dtos/user/add.user.dto";
 import { User } from "entities/user.entity";
 import { UserService } from "src/services/user/user.service";
 
-
 @Controller('api/administrator')
 export class AdministratorControler{
     constructor(

@@ -86,13 +86,12 @@ export class UserService {
         }
 
         if(data.phoneNumber){
-            user.phoneNumber = data.phoneNumber;
-
+        user.phoneNumber = data.phoneNumber;
         return this.user.save(user)
         }
 
         if(data.password){
-            const crypto = require('crypto'); 
+        const crypto = require('crypto'); 
         const passwordHash = crypto.createHash('sha512');           // DTO => model
         passwordHash.update(data.password);                         // username => username        // password [-] =>passwordHash                                                             
         const passwordHashString = passwordHash.digest('hex').toUpperCase();

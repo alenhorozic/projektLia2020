@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { Accaunt } from "./accaunt.entity";
 import { TransaktionType } from "./transaktionType.entity";
+import * as Validator from 'class-validator';
 
 @Index(
   "fk_transaktion_transaktion_transaktion_type_id",
@@ -42,7 +43,14 @@ export class Transaktion {
     precision: 10,
     scale: 2,
   })
-  amount: string;
+  @Validator.IsNotEmpty()
+  @Validator.IsPositive()
+  @Validator.IsNumber({
+    allowInfinity: false,
+    allowNaN: false,
+    maxDecimalPlaces: 2,
+  })
+  amount: number;
 
   @ManyToOne(() => Accaunt, (accaunt) => accaunt.transaktions, {
     onDelete: "RESTRICT",

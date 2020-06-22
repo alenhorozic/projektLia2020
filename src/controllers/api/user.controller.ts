@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Put, Body, Post, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Put, Body, Post, UseGuards, Patch } from "@nestjs/common";
 import { ApiRespons } from "src/misc/apirespons.class";
 import { UserService } from "src/services/user/user.service";
 import { User } from "entities/user.entity";

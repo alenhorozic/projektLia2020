@@ -8,7 +8,6 @@ import { ApiRespons } from 'src/misc/apirespons.class';
 import * as crypto from "crypto";
 
 
-
 @Injectable()
 export class AdministratorService {
     constructor(
@@ -71,7 +70,6 @@ export class AdministratorService {
 
         if(data.email){
             admin.email = data.email;
-
         return this.administrator.save(admin)
         }
 

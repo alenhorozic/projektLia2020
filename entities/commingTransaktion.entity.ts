@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Accaunt } from "./accaunt.entity";
+import * as Validator from 'class-validator';
 
 @Index("fk_comming_transaktion_accaunt_id", ["accauntId"], {})
 @Entity("comming_transaktion")
@@ -28,6 +29,13 @@ export class CommingTransaktion {
   createdAt: Date;
 
   @Column("int", { name: "amount", unsigned: true })
+  @Validator.IsNotEmpty()
+  @Validator.IsPositive()
+  @Validator.IsNumber({
+    allowInfinity: false,
+    allowNaN: false,
+    maxDecimalPlaces: 2,
+  })
   amount: number;
 
   @Column("timestamp", {
@@ -37,6 +45,15 @@ export class CommingTransaktion {
   transaktionAt: Date;
 
   @Column("int", { name: "transaktion_to_accaunt_number", unsigned: true })
+  @Validator.IsNotEmpty()
+  @Validator.IsPositive()
+  @Validator.Max(1000000000)
+  @Validator.Min(100000000)
+  @Validator.IsNumber({
+    allowInfinity: false,
+    allowNaN: false,
+    maxDecimalPlaces: 0,
+  })
   transaktionToAccauntNumber: number ;
 
   @Column("enum", {
@@ -44,6 +61,9 @@ export class CommingTransaktion {
     enum: ["weiting", "peyd", "error"],
     default: () => "'weiting'",
   })
+  @Validator.IsNotEmpty()
+  @Validator.IsString()
+  @Validator.IsIn(["weiting", "peyd", "error"])
   status: "weiting" | "peyd" | "error";
 
   @ManyToOne(() => Accaunt, (accaunt) => accaunt.commingTransaktions, {
