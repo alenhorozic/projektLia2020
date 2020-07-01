@@ -12,6 +12,9 @@ import * as Validator from 'class-validator';
 @Index("uq_user_phone_number", ["phoneNumber"], { unique: true })
 @Entity("user")
 export class User {
+  map(arg0: (user: User) => void) {
+      throw new Error("Method not implemented.");
+  }
   @PrimaryGeneratedColumn({ type: "int", name: "user_id", unsigned: true })
   userId: number;
 

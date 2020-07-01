@@ -19,6 +19,8 @@ export class UserService {
         return this.user.find({
             relations:[
                 "accaunts",
+                "accaunts.transaktions",
+                "accaunts.commingTransaktions",
             ]
         });
     }
@@ -29,6 +31,8 @@ export class UserService {
             },
             relations:[
                 "accaunts",
+                "accaunts.transaktions",
+                "accaunts.commingTransaktions",
             ]
         });
         if (user){
@@ -40,6 +44,8 @@ export class UserService {
         return this.user.findOne(id,{
             relations:[
                 "accaunts",
+                "accaunts.transaktions",
+                "accaunts.commingTransaktions",
             ]
         });
     }

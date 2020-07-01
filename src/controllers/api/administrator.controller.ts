@@ -9,12 +9,14 @@ import { RoleCheckerGuard } from "src/misc/role.checker.guard";
 import { AddUserDto } from "src/dtos/user/add.user.dto";
 import { User } from "entities/user.entity";
 import { UserService } from "src/services/user/user.service";
+import { RegisterUserMailer } from "src/services/user/registeruser.mailer.service";
 
 @Controller('api/administrator')
 export class AdministratorControler{
     constructor(
         private administratorService: AdministratorService,
-        private userService: UserService
+        private userService: UserService,
+        private registerUserMailer: RegisterUserMailer,
       ){}
 
     @Get()               //GET    http://localhost:3000/api/administrator        list all  administrator!! 
@@ -50,7 +52,15 @@ export class AdministratorControler{
   @Put('registeruser')        //PUT  REGISTER NEW USER    http://localhost:3000/api/administrator/registeruser 
   @UseGuards(RoleCheckerGuard)
   @AllowToRoles('administrator')
-  registeruser( @Body() data: AddUserDto ): Promise<User | ApiRespons>{
-      return this.userService.add(data);
+  async registeruser( @Body() data: AddUserDto ): Promise<User | ApiRespons>{
+      const user = await this.userService.add(data);
+
+      if(user instanceof ApiRespons) {
+        return user;
+      }
+
+      this.registerUserMailer.sendRegisterUserEmail(user)
+
+      return user;
   }  
 }

@@ -22,6 +22,9 @@ import { AuthController } from './controllers/api/auth.controller';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { TransaktionTypeController } from './controllers/api/transaktionType.controller';
 import { TransaktionTypeService } from './services/transaktionType/transaktionType.service';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { MailConfig } from 'config/mail.config';
+import { RegisterUserMailer } from './services/user/registeruser.mailer.service';
 
 
 @Module({
@@ -41,7 +44,16 @@ import { TransaktionTypeService } from './services/transaktionType/transaktionTy
         User
        ]
     }),
-    TypeOrmModule.forFeature([ Administrator, User, Accaunt, Transaktion, CommingTransaktion, TransaktionType ])
+    TypeOrmModule.forFeature([ Administrator, User, Accaunt, Transaktion, CommingTransaktion, TransaktionType ]),
+    MailerModule.forRoot({
+      transport:'smtps://' +
+       MailConfig.username + ':' +
+       MailConfig.password + '@' +
+       MailConfig.hostname,
+       defaults: {
+         from: MailConfig.senderEmail,
+       },
+    }),
   ],
   controllers: [
     AppController,
@@ -53,7 +65,7 @@ import { TransaktionTypeService } from './services/transaktionType/transaktionTy
     AuthController,
     TransaktionTypeController
   ],
-  providers: [AdministratorService, UserService, AccauntService, TransaktionService, CommingTransaktionService, TransaktionTypeService],
+  providers: [AdministratorService, UserService, AccauntService, TransaktionService, CommingTransaktionService, TransaktionTypeService, RegisterUserMailer],
   exports:[
     AdministratorService,UserService,AccauntService
   ]

@@ -5,7 +5,7 @@ import { CommingTransaktion } from "entities/commingTransaktion.entity";
 import { RoleCheckerGuard } from "src/misc/role.checker.guard";
 import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
 
-@Controller('api/commingTeansaktion')
+@Controller('api/commingTransaktion')
 @Crud({
     model: {
         type: CommingTransaktion

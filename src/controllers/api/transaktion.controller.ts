@@ -19,12 +19,12 @@ import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
     },
     query: {
         join:{
+            transaktionType:{
+                eager: true
+            },
             accaunt:{
                 eager: true
             },
-            transaktionType:{
-                eager: true
-            }
         }
     },
     routes: {
