@@ -6,6 +6,7 @@ import { AddUserDto } from 'src/dtos/user/add.user.dto';
 import { EditUserDto } from 'src/dtos/user/edit.user.dto';
 import * as crypto from "crypto";
 import { ApiRespons } from 'src/misc/apirespons.class';
+import { UserToken } from 'entities/user-token.entity';
 
 
 
@@ -14,6 +15,8 @@ export class UserService {
     constructor(
         @InjectRepository(User) 
         private readonly user: Repository<User>,
+        @InjectRepository(UserToken) 
+        private readonly userToken: Repository<UserToken>,
     ) { }
     getAll(): Promise<User[]> {
         return this.user.find({
@@ -106,5 +109,48 @@ export class UserService {
         return this.user.save(user);
         }
 
+    }
+    async addToken(userId: number, token: string, expiresAt: string) {
+        const userToken = new UserToken();
+        userToken.userId = userId;
+        userToken.token = token;
+        userToken.expiresAt = expiresAt;
+
+        return await this.userToken.save(userToken);
+    }
+
+    async getUserToken(token: string): Promise<UserToken> {
+        return await this.userToken.findOne({
+            token: token,
+        });
+    }
+
+    async invalidateToken(token: string): Promise<UserToken | ApiRespons> {
+        const userToken = await this.userToken.findOne({
+            token: token,
+        });
+
+        if(!userToken) {
+            return new ApiRespons("error",-10001,"No Such Refresh Token")
+        }
+        
+        userToken.isvalid = 0;
+
+        await this.userToken.save(userToken);
+
+        return await this.getUserToken(token);
+    }
+
+    async invalidateUserTokens(userId: number): Promise<(UserToken | ApiRespons)[]> {
+        const userTokens = await this.userToken.find({
+            userId: userId,
+        });
+
+        const results = [];
+
+        for (const userToken of userTokens) {
+            results.push(this.invalidateToken(userToken.token));
+        }
+        return results;
     }
 }

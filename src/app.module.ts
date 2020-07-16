@@ -25,6 +25,8 @@ import { TransaktionTypeService } from './services/transaktionType/transaktionTy
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailConfig } from 'config/mail.config';
 import { RegisterUserMailer } from './services/user/registeruser.mailer.service';
+import { UserToken } from 'entities/user-token.entity';
+import { AdministratorToken } from 'entities/administrator-token.entity';
 
 
 @Module({
@@ -36,15 +38,27 @@ import { RegisterUserMailer } from './services/user/registeruser.mailer.service'
       username:DatabaseConfiguration.username,
       password:DatabaseConfiguration.password,
       database:DatabaseConfiguration.database,
-      entities: [ Administrator,
+      entities: [ 
+        Administrator,
         Accaunt,
         CommingTransaktion,
         Transaktion,
         TransaktionType,
-        User
+        User,
+        UserToken,
+        AdministratorToken
        ]
     }),
-    TypeOrmModule.forFeature([ Administrator, User, Accaunt, Transaktion, CommingTransaktion, TransaktionType ]),
+    TypeOrmModule.forFeature([ 
+      Administrator, 
+      User, 
+      Accaunt, 
+      Transaktion, 
+      CommingTransaktion, 
+      TransaktionType,
+      UserToken,
+      AdministratorToken
+    ]),
     MailerModule.forRoot({
       transport:'smtps://' +
        MailConfig.username + ':' +

@@ -6,6 +6,7 @@ import { AddAdministratorDto } from 'src/dtos/administrator/add.administrator.dt
 import { EditAdministratorDto } from 'src/dtos/administrator/edit.administrator.dto';
 import { ApiRespons } from 'src/misc/apirespons.class';
 import * as crypto from "crypto";
+import { AdministratorToken } from 'entities/administrator-token.entity';
 
 
 @Injectable()
@@ -13,6 +14,8 @@ export class AdministratorService {
     constructor(
         @InjectRepository(Administrator) 
         private readonly administrator: Repository<Administrator>,
+        @InjectRepository(AdministratorToken) 
+        private readonly administratorToken: Repository<AdministratorToken>,
     ) { }
     getAll(): Promise<Administrator[]> {
         return this.administrator.find();
@@ -84,6 +87,47 @@ export class AdministratorService {
         }
 
     }
+    async addToken(administratorId: number, token: string, expiresAt: string) {
+        const administratorToken = new AdministratorToken();
+        administratorToken.administratorId = administratorId;
+        administratorToken.token = token;
+        administratorToken.expiresAt = expiresAt;
+
+        return await this.administratorToken.save(administratorToken);
+    }
+
+    async getAdministratorToken(token: string): Promise<AdministratorToken> {
+        return await this.administratorToken.findOne({
+            token: token,
+        });
+    }
+
+    async invalidateToken(token: string): Promise<AdministratorToken | ApiRespons> {
+        const administratorToken = await this.administratorToken.findOne({
+            token: token,
+        });
+
+        if(!administratorToken) {
+            return new ApiRespons("error",-10001,"No Such Refresh Token")
+        }
+        
+        administratorToken.isvalid = 0;
+
+        await this.administratorToken.save(administratorToken);
+
+        return await this.getAdministratorToken(token);
+    }
+
+    async invalidateAdministratorTokens(administratorId: number): Promise<(AdministratorToken | ApiRespons)[]> {
+        const administratorTokens = await this.administratorToken.find({
+            administratorId: administratorId,
+        });
+
+        const results = [];
+
+        for (const administratorToken of administratorTokens) {
+            results.push(this.invalidateToken(administratorToken.token));
+        }
+        return results;
+    }
 }
-//add
-//editById

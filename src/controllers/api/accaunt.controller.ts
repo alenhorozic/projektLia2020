@@ -23,7 +23,7 @@ export class AccauntControler{
       return this.accauntService.getAll();
       }
 
-    @Get('user')               //GET    http://localhost:3000/api/accaunt/user       list all  accaunt from user login (tokeb)!! 
+    @Get('user')               //GET    http://localhost:3000/api/accaunt/user       list all  accaunt from user login (token)!! 
     @UseGuards(RoleCheckerGuard)
     @AllowToRoles("user")
     async getCurentAccaaunt(@Req() req: Request): Promise<Accaunt[]> {
