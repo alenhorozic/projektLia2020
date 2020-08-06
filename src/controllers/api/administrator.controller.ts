@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Put, Body, Post, SetMetadata, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Put, Body, Post, SetMetadata, UseGuards, Patch } from "@nestjs/common";
 import { AdministratorService } from "src/services/administrator/administrator.service";
 import { Administrator } from "entities/administrator.entity";
 import { AddAdministratorDto } from "src/dtos/administrator/add.administrator.dto";

@@ -26,7 +26,7 @@ export class AuthController {
         const administrator = await this.administratorService.getByUsername(data.username);
 
         if (!administrator) {
-            return new Promise(resolve => resolve(new ApiRespons('errpr',-3005,'Wrong Username')));
+            return new Promise(resolve => resolve(new ApiRespons('error',-3005,'Undefined Username')));
         }
 
         const passwordHash = crypto.createHash('sha512');           // DTO => model
@@ -34,7 +34,7 @@ export class AuthController {
         const passwordHashString = passwordHash.digest('hex').toUpperCase();
 
         if (administrator.passwordHash !== passwordHashString) {
-            return new Promise(resolve => resolve(new ApiRespons('errpr',-3006,'Wrong Pasword')));
+            return new Promise(resolve => resolve(new ApiRespons('error',-3006,'Wrong Pasword')));
         }
 
         const jwtData = new JwtDataDto();
@@ -110,7 +110,7 @@ export class AuthController {
         jwtData.role = jwtRefreshData.role,
         jwtData.id = jwtRefreshData.id;
         jwtData.identity = jwtRefreshData.identity;
-        jwtData.ext = this.getDatePlus(60*125);
+        jwtData.ext = this.getDatePlus(60*5);
         jwtData.ip = jwtRefreshData.ip;
         jwtData.ua = jwtRefreshData.ua;
 
@@ -131,7 +131,7 @@ export class AuthController {
         const user = await this.userService.getByEmail(data.email);
 
         if (!user) {
-            return new Promise(resolve => resolve(new ApiRespons('errpr',-3007,'Wrong Email')));
+            return new Promise(resolve => resolve(new ApiRespons('error',-3007,'Wrong Email')));
         }
 
         const passwordHash = crypto.createHash('sha512');           // DTO => model
@@ -139,7 +139,7 @@ export class AuthController {
         const passwordHashString = passwordHash.digest('hex').toUpperCase();
 
         if (user.passwordHash !== passwordHashString) {
-            return new Promise(resolve => resolve(new ApiRespons('errpr',-3008,'Wrong Pasword')));
+            return new Promise(resolve => resolve(new ApiRespons('error',-3008,'Wrong Pasword')));
         }
 
         const jwtData = new JwtDataDto();
@@ -214,7 +214,7 @@ export class AuthController {
         jwtData.role = jwtRefreshData.role,
         jwtData.id = jwtRefreshData.id;
         jwtData.identity = jwtRefreshData.identity;
-        jwtData.ext = this.getDatePlus(60*125);
+        jwtData.ext = this.getDatePlus(60*5);
         jwtData.ip = jwtRefreshData.ip;
         jwtData.ua = jwtRefreshData.ua;
 
