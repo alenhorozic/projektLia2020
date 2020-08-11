@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Put, Body, Post, SetMetadata, UseGuards, Patch } from "@nestjs/common";
+import { Controller, Get, Param, Put, Body, Post, SetMetadata, UseGuards, Patch, Req } from "@nestjs/common";
 import { AdministratorService } from "src/services/administrator/administrator.service";
 import { Administrator } from "entities/administrator.entity";
 import { AddAdministratorDto } from "src/dtos/administrator/add.administrator.dto";
@@ -10,6 +10,7 @@ import { AddUserDto } from "src/dtos/user/add.user.dto";
 import { User } from "entities/user.entity";
 import { UserService } from "src/services/user/user.service";
 import { RegisterUserMailer } from "src/services/user/registeruser.mailer.service";
+import { Request } from "express";
 
 @Controller('api/administrator')
 export class AdministratorControler{
@@ -25,6 +26,16 @@ export class AdministratorControler{
     getAll(): Promise<Administrator[]> {
     return this.administratorService.getAll();
   }
+
+  @Get('administrator')               //GET    http://localhost:3000/api/administrator/administrator       list administrator from administrator login (token)!! 
+  @UseGuards(RoleCheckerGuard)
+  @AllowToRoles("administrator")
+  async getCurentAdministrator(@Req() req: Request): Promise<Administrator[]> {
+      const administratorId = req.token.id;
+  return  this.administratorService.getAdminWhitToken(administratorId);
+}
+
+
   @Get(':id')               //GET    http://localhost:3000/api/administrator/4/  
   @UseGuards(RoleCheckerGuard)
   @AllowToRoles('administrator') 
@@ -59,7 +70,7 @@ export class AdministratorControler{
         return user;
       }
 
-      this.registerUserMailer.sendRegisterUserEmail(user)
+     await this.registerUserMailer.sendRegisterUserEmail(user)
 
       return user;
   }  

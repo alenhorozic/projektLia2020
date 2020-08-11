@@ -153,4 +153,15 @@ export class UserService {
         }
         return results;
     }
+    async getUserWhitToken(userId: number): Promise<User[] | null> {
+        const user = await this.user.find({
+            where: {
+                userId: userId,
+            },
+        });
+        if(!user || user.length === 0) {
+            return null;
+        }
+        return user;
+    }
 }

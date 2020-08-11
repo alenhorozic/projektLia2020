@@ -130,4 +130,15 @@ export class AdministratorService {
         }
         return results;
     }
+    async getAdminWhitToken(administratorId: number): Promise<Administrator[] | null> {
+        const administrator = await this.administrator.find({
+            where: {
+                administratorId: administratorId,
+            },
+        });
+        if(!administrator || administrator.length === 0) {
+            return null;
+        }
+        return administrator;
+    }
 }
