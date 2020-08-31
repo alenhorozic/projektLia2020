@@ -28,6 +28,7 @@ export class AccauntService {
         const accaunt = await this.accaunt.find({
             where: {
                 userId: userId,
+                // isActiv: 1,   show only activ accaunt
             },
             relations: [
                 "user",

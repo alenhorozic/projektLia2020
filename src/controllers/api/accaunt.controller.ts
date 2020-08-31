@@ -18,28 +18,33 @@ export class AccauntControler{
 
       @Get()               //GET    http://localhost:3000/api/accaunt        list all  accaunt!! 
       @UseGuards(RoleCheckerGuard)
-      @AllowToRoles('administrator')
-      getAll(): Promise<Accaunt[]> {
-      return this.accauntService.getAll();
+      @AllowToRoles('user')
+      async getCurentAccaaunt(@Req() req: Request): Promise<Accaunt[]> {
+        const userId = req.token.id;
+        return  this.accauntService.getAllAccauntUser(userId);
       }
 
-    @Get('user')               //GET    http://localhost:3000/api/accaunt/user       list all  accaunt from user login (token)!! 
-    @UseGuards(RoleCheckerGuard)
-    @AllowToRoles("user")
-    async getCurentAccaaunt(@Req() req: Request): Promise<Accaunt[]> {
-        const userId = req.token.id;
-    return  this.accauntService.getAllAccauntUser(userId);
-  }
+  //  @Get('user')               //GET    http://localhost:3000/api/accaunt/user       list all  accaunt from user login (token)!! 
+  //  @UseGuards(RoleCheckerGuard)
+  //  @AllowToRoles("user")
+  //  async getCurentAccaaunt(@Req() req: Request): Promise<Accaunt[]> {
+  //      const userId = req.token.id;
+  //  return  this.accauntService.getAllAccauntUser(userId);
+  //}
   @Get(':id')               //GET    http://localhost:3000/api/accaunt/4/  
   @UseGuards(RoleCheckerGuard)
-  @AllowToRoles("administrator") 
-    getById(@Param('id') accauntId: number): Promise<Accaunt | ApiRespons> {
+  @AllowToRoles("user") 
+    getById(@Param('id') accauntId: number,@Req() req: Request): Promise<Accaunt | ApiRespons> {
       return new Promise(async (resolve) =>{
-        let user = await this.accauntService.getById(accauntId);
-        if(user === undefined){
+        const userId = req.token.id;
+        let accaunt = await this.accauntService.getById(accauntId);
+        if(accaunt === undefined){
           resolve(new ApiRespons("error", -1003,"Accaunt Not Find"));
         }
-        resolve(user);
+        if(accaunt.userId === userId){
+          resolve(accaunt);
+        }
+        resolve(new ApiRespons("error", -1011,"You Dont Hawe Prommis To Se This Accaunt"));
       });
   }
   @Put('registeraccaunt')                  //PUT    http://localhost:3000/api/accaunt/registeraccaunt

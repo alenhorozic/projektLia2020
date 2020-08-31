@@ -7,6 +7,7 @@ import {
 } from "typeorm";
 import { Accaunt } from "./accaunt.entity";
 import * as Validator from 'class-validator';
+import { Transaktion } from "./transaktion.entity";
 
 @Index("uq_user_email", ["email"], { unique: true })
 @Index("uq_user_phone_number", ["phoneNumber"], { unique: true })
@@ -63,4 +64,7 @@ export class User {
 
   @OneToMany(() => Accaunt, (accaunt) => accaunt.user)
   accaunts: Accaunt[];
+
+  @OneToMany(() => Transaktion, (transaktion) => transaktion.user)
+  transaktions: Transaktion[];
 }

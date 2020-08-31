@@ -1,58 +1,30 @@
-import { Controller, UseGuards } from "@nestjs/common";
-import { Crud } from "@nestjsx/crud";
-import { Transaktion } from "entities/transaktion.entity";
-import { TransaktionService } from "src/services/transaktion/transaktion.service";
-import { RoleCheckerGuard } from "src/misc/role.checker.guard";
+import { Controller, Get, Param, Put, Body, Post, SetMetadata, UseGuards, Req } from "@nestjs/common";
 import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
+import { RoleCheckerGuard } from "src/misc/role.checker.guard";
+import { Request } from "express";
+import { TransaktionService } from "src/services/transaktion/transaktion.service";
+import { Transaktion } from "entities/transaktion.entity";
+import { AddTransaktionDto } from "src/dtos/transaktion/add.transaktion.dto";
+import { ApiRespons } from "src/misc/apirespons.class";
+
 
 @Controller('api/transaktion')
-@Crud({
-    model: {
-        type: Transaktion
-    },
-    params: {
-        id: {
-            field: 'transaktionId',
-            type: 'number',
-            primary: true
-        },
-    },
-    query: {
-        join:{
-            transaktionType:{
-                eager: true
-            },
-            accaunt:{
-                eager: true
-            },
-        }
-    },
-    routes: {
-        only:[
-            "createOneBase",
-            "getManyBase",
-            "getOneBase",
-        ],
-        createOneBase: {
-            decorators: [
-                UseGuards(RoleCheckerGuard),
-                AllowToRoles('administrator','user')
-            ],
-        },
-        getManyBase:{
-            decorators: [
-                UseGuards(RoleCheckerGuard),
-                AllowToRoles('administrator','user')
-            ],
-        },
-        getOneBase:{
-            decorators: [
-                UseGuards(RoleCheckerGuard),
-                AllowToRoles('administrator','user')
-            ],
-        }
-    }
-})
-export class TransaktionController {
-    constructor(public service: TransaktionService) {}
+export class TransaktionController{
+    constructor(
+        private transaktionService: TransaktionService,
+      ){}
+
+      @Get()               //GET    http://localhost:3000/api/transaktion        list all  transaktioner!! 
+      @UseGuards(RoleCheckerGuard)
+      @AllowToRoles('user')
+      async getCurentAccaaunt(@Req() req: Request): Promise<Transaktion[]> {
+        const userId = req.token.id;
+        return  this.transaktionService.getAllTransaktionUser(userId);
+      }
+      @Put('')                  //PUT    http://localhost:3000/api/transaktion
+      @UseGuards(RoleCheckerGuard)
+      @AllowToRoles("user")
+      add( @Body() data: AddTransaktionDto ): Promise<Transaktion | ApiRespons>{
+      return this.transaktionService.add(data);
+  }  
 }

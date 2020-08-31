@@ -9,12 +9,14 @@ import {
 import { Accaunt } from "./accaunt.entity";
 import { TransaktionType } from "./transaktionType.entity";
 import * as Validator from 'class-validator';
+import { User } from "./user.entity";
 
 @Index(
   "fk_transaktion_transaktion_transaktion_type_id",
   ["transaktionTypeId"],
   {}
 )
+@Index("fk_transaktion_user_id", ["userId"], {})
 @Index("fk_transaktion_accaunt_id", ["accauntId"], {})
 @Entity("transaktion")
 export class Transaktion {
@@ -36,6 +38,9 @@ export class Transaktion {
 
   @Column("int", { name: "accaunt_id", unsigned: true })
   accauntId: number;
+
+  @Column("int", { name: "user_id", unsigned: true })
+  userId: number;
 
   @Column("decimal", {
     name: "amount",
@@ -68,4 +73,12 @@ export class Transaktion {
     { name: "transaktion_type_id", referencedColumnName: "transaktionTypeId" },
   ])
   transaktionType: TransaktionType;
+
+  @ManyToOne(() => User, (user) => user.transaktions, {
+    onDelete: "RESTRICT",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn([{ name: "user_id", referencedColumnName: "userId" }])
+  user: User;
+
 }

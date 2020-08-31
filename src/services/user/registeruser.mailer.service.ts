@@ -25,7 +25,7 @@ export class RegisterUserMailer {
         <p> Forname: ${user.forname}.</p>
         <p> Surname: ${user.surname}.</p>
         <p> email: ${user.email}.</p>
-        <p> password: [hiden].</p>
+        <p> password: [hidden].</p>
         <p> phoneNumber: ${user.phoneNumber}.</p>
         </p>`;
     }

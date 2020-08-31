@@ -81,7 +81,7 @@ import { AdministratorToken } from 'entities/administrator-token.entity';
   ],
   providers: [AdministratorService, UserService, AccauntService, TransaktionService, CommingTransaktionService, TransaktionTypeService, RegisterUserMailer],
   exports:[
-    AdministratorService,UserService,AccauntService
+    AdministratorService,UserService,AccauntService,TransaktionService
   ]
 })
 export class AppModule implements NestModule {
