@@ -20,7 +20,7 @@ export class AccauntService {
                 "user",
                 "transaktions",
                 "transaktions.transaktionType",
-                "commingTransaktions"
+                "commingTransaktions",
             ]
         });
     }

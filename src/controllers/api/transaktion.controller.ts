@@ -21,7 +21,7 @@ export class TransaktionController{
         const userId = req.token.id;
         return  this.transaktionService.getAllTransaktionUser(userId);
       }
-      @Put('')                  //PUT    http://localhost:3000/api/transaktion
+      @Post('')                  //PUT    http://localhost:3000/api/transaktion
       @UseGuards(RoleCheckerGuard)
       @AllowToRoles("user")
       add( @Body() data: AddTransaktionDto ): Promise<Transaktion | ApiRespons>{
