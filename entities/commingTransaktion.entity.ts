@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { Accaunt } from "./accaunt.entity";
 import * as Validator from 'class-validator';
+import { User } from "./user.entity";
 
 @Index("fk_comming_transaktion_accaunt_id", ["accauntId"], {})
 @Entity("comming_transaktion")
@@ -28,7 +29,12 @@ export class CommingTransaktion {
   })
   createdAt: Date;
 
-  @Column("int", { name: "amount", unsigned: true })
+  @Column("decimal", {
+    name: "amount",
+    unsigned: true,
+    precision: 10,
+    scale: 2,
+  })
   @Validator.IsNotEmpty()
   @Validator.IsPositive()
   @Validator.IsNumber({
@@ -66,10 +72,20 @@ export class CommingTransaktion {
   @Validator.IsIn(["weiting", "peyd", "error"])
   status: "weiting" | "peyd" | "error";
 
+  @Column("int", { name: "user_id", unsigned: true })
+  userId: number;
+
   @ManyToOne(() => Accaunt, (accaunt) => accaunt.commingTransaktions, {
     onDelete: "RESTRICT",
     onUpdate: "CASCADE",
   })
   @JoinColumn([{ name: "accaunt_id", referencedColumnName: "accauntId" }])
   accaunt: Accaunt;
+
+  @ManyToOne(() => User, (user) => user.commingTransaktions, {
+    onDelete: "RESTRICT",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn([{ name: "user_id", referencedColumnName: "userId" }])
+  user: User;
 }

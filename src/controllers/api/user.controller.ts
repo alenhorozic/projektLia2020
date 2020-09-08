@@ -1,8 +1,7 @@
-import { Controller, Get, Param, Put, Body, Post, UseGuards, Patch, Req } from "@nestjs/common";
+import { Controller, Get, Param, Put, Body, Post, UseGuards, Req } from "@nestjs/common";
 import { ApiRespons } from "src/misc/apirespons.class";
 import { UserService } from "src/services/user/user.service";
 import { User } from "entities/user.entity";
-import { AddUserDto } from "src/dtos/user/add.user.dto";
 import { EditUserDto } from "src/dtos/user/edit.user.dto";
 import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
 import { RoleCheckerGuard } from "src/misc/role.checker.guard";

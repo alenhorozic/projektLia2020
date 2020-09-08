@@ -8,6 +8,7 @@ import {
 import { Accaunt } from "./accaunt.entity";
 import * as Validator from 'class-validator';
 import { Transaktion } from "./transaktion.entity";
+import { CommingTransaktion } from "./commingTransaktion.entity";
 
 @Index("uq_user_email", ["email"], { unique: true })
 @Index("uq_user_phone_number", ["phoneNumber"], { unique: true })
@@ -67,4 +68,7 @@ export class User {
 
   @OneToMany(() => Transaktion, (transaktion) => transaktion.user)
   transaktions: Transaktion[];
+
+  @OneToMany(() => CommingTransaktion, (commingTransaktion) => commingTransaktion.user)
+  commingTransaktions: CommingTransaktion[];
 }
